@@ -249,6 +249,8 @@ namespace NHttp
         {
             try
             {
+                BeginAcceptTcpClient(); // Do this first so as exception below doesn't interrupt listening
+
                 var listener = _listener; // Prevent race condition.
 
                 if (listener == null)
@@ -268,9 +270,7 @@ namespace NHttp
 
                 RegisterClient(client);
 
-                client.BeginRequest();
-
-                BeginAcceptTcpClient();
+                client.BeginRequest();                
             }
             catch (ObjectDisposedException)
             {
